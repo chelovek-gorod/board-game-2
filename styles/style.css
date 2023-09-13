@@ -33,16 +33,10 @@ body {
     width: 100vw;
     height: 100vh;
 
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
+    font-family: MicraDi, Arial, Helvetica, sans-serif;
+    font-size: 12px;
     
     background-color: #000000;
-    background-image: url(../src/images/wood.jpg);
-    background-position: center;
-    background-repeat: repeat;
-    overflow: hidden;
 
     /**/
     -webkit-touch-callout: none; /* iOS Safari */
@@ -53,7 +47,86 @@ body {
     user-select: none;
 }
 
-canvas {
+#container {
+    padding: 0;
+    margin: 0;
+    width: 100vw;
+    height: 100vh;
+
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+
+    background-image: url(../src/images/wood.jpg);
+    background-position: center;
+    background-repeat: repeat;
+    overflow: hidden;
+}
+
+#shell {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+
+    box-sizing: border-box;
+    padding: 10px;
+
+    display: flex;
+    font-size: 24px;
+    color: #ffffff;
+    text-align: center;
+    justify-content: center;
+
+    background-color: #000000c0;
+    align-items: center;
+}
+
+.side-bar {
+    box-sizing: border-box;
+    padding: 10px;
+    height: 100vh;
+    width: calc((100vw - 100vh) / 2);
+    color: #ffffff;
+}
+
+.second {
+    background-color: #0000ff40;
+}
+
+.first {
+    background-color: #00ff0040;
+}
+
+#canvas {
     display: block;
+    height: 100vh;
+    width: 100vh;
     background-color: transparent;
+    opacity: 0;
+    transition: opacity 2s ease-in;
+}
+
+@media (orientation: landscape) {
+    .side-bar {
+        height: 100vh;
+        width: calc((100vw - 100vh) / 2);
+    }
+    
+    #canvas {
+        height: 100vh;
+        width: 100vh;
+    }
+}
+
+@media (orientation: portrait) {
+    .side-bar {
+        height: calc((100vh - 100vw) / 2);
+        width: 100vw;
+    }
+    
+    #canvas {
+        height: 100vw;
+        width: 100vw;
+    }
 }
