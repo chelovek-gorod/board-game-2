@@ -26,6 +26,13 @@
     font-weight: normal;
 }
 
+@font-face {
+    font-family: clip;
+    src: url("../src/fonts/clip.ttf") format('truetype');
+    font-style: normal;
+    font-weight: 600;
+}
+
 body {
     padding: 0;
     margin: 0;
@@ -33,7 +40,7 @@ body {
     width: 100vw;
     height: 100vh;
 
-    font-family: MicraDi, Arial, Helvetica, sans-serif;
+    font-family: clip, Arial, Helvetica, sans-serif;
     font-size: 12px;
     
     background-color: #000000;
@@ -91,11 +98,11 @@ body {
 }
 
 .second {
-    background-color: #0000ff40;
+    /*background-color: #0000ff40;*/
 }
 
 .first {
-    background-color: #00ff0040;
+    /*background-color: #00ff0040;*/
 }
 
 #canvas {
