@@ -46,7 +46,7 @@ class Text {
             this.offsetX = Math.floor(this.img.width / 2);
         }
 
-        this.ctx.font = this.font; console.log(this.font);
+        this.ctx.font = this.font;
         this.ctx.textBaseline = 'top';
         this.ctx.textAlign = this.align;
         this.ctx.fillStyle = this.color;

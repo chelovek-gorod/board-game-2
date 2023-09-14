@@ -9,16 +9,24 @@ class StartMenu {
         this.startGameCallback = startGameCallback;
         this.state = state || {
             players: [
-                /* if (tokenIndex >= tokens.length) random */
+                /* if (tokenIndex === Infinity) random */
                 { isUsed: true,  isBot: false, tokenIndex: 2},
                 { isUsed: true,  isBot: true,  tokenIndex: 11},
                 { isUsed: true,  isBot: true,  tokenIndex: 1},
-                { isUsed: false, isBot: true,  tokenIndex: 0}
+                { isUsed: false, isBot: true,  tokenIndex: Infinity}
             ],
+
+            tokens: game.tokens.map((img, index) => index),
         
             music: true,
             effects: true,
+
+            start: true,
         };
+        this.state.players.forEach(player => {
+            this.state.tokens = this.state.tokens.filter(token => player.tokenIndex !== token);
+        });
+
         this.canvas = document.createElement('canvas');
         this.context = this.canvas.getContext('2d');
         this.canvas.width = VIEW.width;
@@ -94,6 +102,8 @@ class StartMenu {
     }
 
     render() {
+        this.updateStateStart();
+
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
         this.labelText.draw(this.context)
@@ -116,7 +126,7 @@ class StartMenu {
         this.context.drawImage( this.getTokenImage(3),   this.btnP4Token.x, this.btnP4Token.y, this.button.width,   this.button.height);
 
         this.context.drawImage( (this.state.music) ? SPRITES.menuMusicOn : SPRITES.menuMusicOff,  this.btnMusic.x,   this.btnMusic.y,   this.button.width,   this.button.height);
-        this.context.drawImage( SPRITES.menuButton,   this.btnStart.x,   this.btnStart.y,   this.underlay.width, this.underlay.height);
+        this.context.drawImage( (this.state.start) ? SPRITES.menuButton : SPRITES.menuButtonLock, this.btnStart.x,   this.btnStart.y,   this.underlay.width, this.underlay.height);
         this.context.drawImage( (this.state.effects) ? SPRITES.menuEffectsOn : SPRITES.menuEffectsOff, this.btnEffects.x, this.btnEffects.y, this.button.width,   this.button.height);
 
         this.buttonText.draw(this.context);
@@ -140,7 +150,8 @@ class StartMenu {
 
     click(x, y) {
         // start game
-        if (this.checkClickButton(x, y, this.btnStart)) this.startGame();
+        if (this.checkClickButton(x, y, this.btnStart)
+        && this.state.start) this.startGame();
 
         // music
         if (this.checkClickButton(x, y, this.btnMusic)) {
@@ -154,101 +165,64 @@ class StartMenu {
             this.render();
         }
 
-        // player 1 { isUsed: true,  isBot: false, tokenIndex: 2}
-        if (this.checkClickButton(x, y, this.btnP1User)) {
-            if(this.state.players[0].isUsed) {
-                if(this.state.players[0].isBot) {
-                    this.state.players[0].isUsed = false;
-                    this.state.players[0].isBot = false;
-                } else {
-                    this.state.players[0].isBot = true;
+        if (this.checkClickButton(x, y, this.btnP1User)) this.clickPlayer(0);
+        if (this.checkClickButton(x, y, this.btnP1Token)) this.clickToken(0);
+
+        if (this.checkClickButton(x, y, this.btnP2User)) this.clickPlayer(1);
+        if (this.checkClickButton(x, y, this.btnP2Token)) this.clickToken(1);
+
+        if (this.checkClickButton(x, y, this.btnP3User)) this.clickPlayer(2);
+        if (this.checkClickButton(x, y, this.btnP3Token)) this.clickToken(2);
+        
+        if (this.checkClickButton(x, y, this.btnP4User)) this.clickPlayer(3);
+        if (this.checkClickButton(x, y, this.btnP4Token)) this.clickToken(3);
+    }
+
+    updateStateStart() {
+        let players = 0;
+        this.state.players.forEach(player => {
+            if (player.isUsed) players++;
+        });
+        this.state.start = players > 1;
+    }
+
+    clickPlayer(index) {
+        if(this.state.players[index].isUsed) {
+            if(this.state.players[index].isBot) {
+                this.state.players[index].isUsed = false;
+                this.state.players[index].isBot = false;
+                if (isFinite(this.state.players[index].tokenIndex)) {
+                    this.state.tokens.push(this.state.players[index].tokenIndex);
+                    this.state.players[index].tokenIndex = Infinity;
                 }
             } else {
-                this.state.players[0].isUsed = true;
+                this.state.players[index].isBot = true;
             }
-            this.render();
+        } else {
+            this.state.players[index].isUsed = true;
         }
+        this.render();
+    }
 
-        if (this.checkClickButton(x, y, this.btnP1Token)) {
-            this.state.players[0].tokenIndex++;
-            if (this.state.players[0].tokenIndex > game.tokens.length) {
-                this.state.players[0].tokenIndex = 0;
-            }
-            this.render();
+    clickToken(index) {
+        if (!this.state.players[index].isUsed) {
+            this.state.players[index].isUsed = true;
+            return this.render();
         }
-
-        // player 2 { isUsed: true,  isBot: false, tokenIndex: 2}
-        if (this.checkClickButton(x, y, this.btnP2User)) {
-            if(this.state.players[1].isUsed) {
-                if(this.state.players[1].isBot) {
-                    this.state.players[1].isUsed = false;
-                    this.state.players[1].isBot = false;
-                } else {
-                    this.state.players[1].isBot = true;
-                }
-            } else {
-                this.state.players[1].isUsed = true;
-            }
-            this.render();
+        if (isFinite(this.state.players[index].tokenIndex)) {
+            this.state.tokens.push(this.state.players[index].tokenIndex);
         }
-
-        if (this.checkClickButton(x, y, this.btnP2Token)) {
-            this.state.players[1].tokenIndex++;
-            if (this.state.players[1].tokenIndex > game.tokens.length) {
-                this.state.players[1].tokenIndex = 0;
-            }
-            this.render();
-        }
-
-        // player 3 { isUsed: true,  isBot: false, tokenIndex: 2}
-        if (this.checkClickButton(x, y, this.btnP3User)) {
-            if(this.state.players[2].isUsed) {
-                if(this.state.players[2].isBot) {
-                    this.state.players[2].isUsed = false;
-                    this.state.players[2].isBot = false;
-                } else {
-                    this.state.players[2].isBot = true;
-                }
-            } else {
-                this.state.players[2].isUsed = true;
-            }
-            this.render();
-        }
-
-        if (this.checkClickButton(x, y, this.btnP3Token)) {
-            this.state.players[2].tokenIndex++;
-            if (this.state.players[2].tokenIndex > game.tokens.length) {
-                this.state.players[2].tokenIndex = 0;
-            }
-            this.render();
-        }
-
-        // player 4 { isUsed: true,  isBot: false, tokenIndex: 2}
-        if (this.checkClickButton(x, y, this.btnP4User)) {
-            if(this.state.players[3].isUsed) {
-                if(this.state.players[3].isBot) {
-                    this.state.players[3].isUsed = false;
-                    this.state.players[3].isBot = false;
-                } else {
-                    this.state.players[3].isBot = true;
-                }
-            } else {
-                this.state.players[3].isUsed = true;
-            }
-            this.render();
-        }
-
-        if (this.checkClickButton(x, y, this.btnP4Token)) {
-            this.state.players[3].tokenIndex++;
-            if (this.state.players[3].tokenIndex > game.tokens.length) {
-                this.state.players[3].tokenIndex = 0;
-            }
-            this.render();
-        }
-
+        this.state.players[index].tokenIndex = this.state.tokens.shift();
+        this.render();
     }
 
     startGame() {
+        this.state.players.forEach(player=> {
+            if(!isFinite(player.tokenIndex)) {
+                this.state.tokens.sort(() => Math.random() - 0.5);
+                player.tokenIndex = this.state.tokens.pop();
+            }
+        });
         VIEW.canvas.style.opacity = 0;
         setTimeout(() => {
             VIEW.getLayer('menu').clear();

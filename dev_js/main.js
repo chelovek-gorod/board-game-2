@@ -66,8 +66,7 @@ function startGame(options) {
 
     for (let i = 0; i < options.players.length; i++) {
         if(options.players[i].isUsed) {
-            let tokenIndex = options.players[i].tokenIndex;
-            if (tokenIndex >= game.tokens.length) tokenIndex = Math.floor(Math.random() * game.tokens.length)
+            const tokenIndex = options.players[i].tokenIndex;
             const startPoint = (i + 2) % options.players.length;
             game.players.push( new Player(game.tokens[tokenIndex], startPoint, options.players[i].isBot) );
         }
