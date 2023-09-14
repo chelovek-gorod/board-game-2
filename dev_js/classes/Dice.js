@@ -9,6 +9,17 @@ const results = [
     /* START */
 ]
 
+function checkAllTokensInReserve() {
+    let isAllTokensInReserve = true;
+    const player = game.players[game.currentTurn]; console.log(game.players);
+    if (!player) return false; /* at set start value before players init */
+
+    player.tokens.forEach(token => {
+        if (token.container !== token.reserve) isAllTokensInReserve = false;
+    });
+    return isAllTokensInReserve;
+}
+
 class Dice {
     constructor(x, y) {
         this.img = SPRITES.dice;
@@ -31,10 +42,9 @@ class Dice {
 
     getNewValue() {
         /* chit */
-        const value = (results.length) ? results.shift() : Math.ceil(Math.random() * 6);
+        //const value = (results.length) ? results.shift() : Math.ceil(Math.random() * 6);
+        const value = (checkAllTokensInReserve() && Math.random() < 0.5) ? 6 : Math.ceil(Math.random() * 6);
 
-        // NORMAL
-        //const value = Math.ceil(Math.random() * 6);
         switch(value) {
             case 1: 
                 this.framePoint.x = 0;

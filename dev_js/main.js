@@ -9,7 +9,14 @@ import constants from './constants';
 import Timer from './classes/Timer';
 import StartMenu from './classes/StartMenu';
 
-loader(initGame);
+loader(initGame, loadingProgress);
+
+const secondDiv = document.querySelector('.second');
+secondDiv.innerHTML = `Loading...`;
+
+function loadingProgress(data) {
+    secondDiv.innerHTML = `Loaded ${data.loaded} / ${data.files} files.`;
+}
 
 // canvas layers
 const timersLayer = new Layer('timers', 0);
@@ -39,11 +46,12 @@ export const game = {
     },
 
     end() {
-        document.querySelector('second').innerHTML = `PLAYER ${this.currentTurn} WIN!`;
+        secondDiv.innerHTML = `PLAYER ${this.currentTurn} WIN!`;
     }
 };
 
 function initGame() {
+    secondDiv.innerHTML = '';
     game.tokens = [
         SPRITES.tokenBomb, SPRITES.tokenButton, SPRITES.tokenCap, SPRITES.tokenCoin, SPRITES.tokenCrystal,
         SPRITES.tokenDragon, SPRITES.tokenEye, SPRITES.tokenHelmet, SPRITES.tokenMask, SPRITES.tokenMolecule,

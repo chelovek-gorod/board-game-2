@@ -1,7 +1,8 @@
-import { SPRITES } from "../assets";
+import { SOUNDS, SPRITES } from "../assets";
 import constants from "../constants";
 import { game } from "../main";
 import VIEW from "../render";
+import { playSound, setSoundState } from "../sound";
 import Text from "./Text";
 
 class StartMenu {
@@ -156,12 +157,16 @@ class StartMenu {
         // music
         if (this.checkClickButton(x, y, this.btnMusic)) {
             this.state.music = !this.state.music;
+            setSoundState(this.state);
+            playSound(SOUNDS.menuMusic);
             this.render();
         }
 
         // effects
         if (this.checkClickButton(x, y, this.btnEffects)) {
             this.state.effects = !this.state.effects;
+            setSoundState(this.state);
+            playSound(SOUNDS.menuEffects);
             this.render();
         }
 
@@ -187,6 +192,8 @@ class StartMenu {
     }
 
     clickPlayer(index) {
+        playSound(SOUNDS.menuClick);
+
         if(this.state.players[index].isUsed) {
             if(this.state.players[index].isBot) {
                 this.state.players[index].isUsed = false;
@@ -205,6 +212,8 @@ class StartMenu {
     }
 
     clickToken(index) {
+        playSound(SOUNDS.menuClick);
+
         if (!this.state.players[index].isUsed) {
             this.state.players[index].isUsed = true;
             return this.render();
@@ -217,6 +226,7 @@ class StartMenu {
     }
 
     startGame() {
+        playSound(SOUNDS.menuStart);
         this.state.players.forEach(player=> {
             if(!isFinite(player.tokenIndex)) {
                 this.state.tokens.sort(() => Math.random() - 0.5);

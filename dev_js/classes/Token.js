@@ -4,10 +4,7 @@ import Pointer from './Pointer';
 import { SOUNDS } from '../assets';
 import Timer from './Timer';
 import constants from '../constants';
-
-function playStepSound() {
-    SOUNDS['step' + Math.floor(Math.random() * 7)].play();
-}
+import { playSound } from '../sound';
 
 class Token {
     constructor(player) { // tokenImage, startPoint, isBot
@@ -260,7 +257,7 @@ class Token {
         this.speed = distance / this.stepDuration;
 
         switch (this.container) {
-            case this.reserve : SOUNDS.startToken.play(); break;
+            case this.reserve : playSound(SOUNDS.startToken); break;
         }
     }
 
@@ -295,7 +292,7 @@ class Token {
             if (otherToken) otherToken.pushPathToReserve();
         }
 
-        playStepSound();
+        playSound();
 
         if (this.path.length) this.startStep();
         else this.endMove();

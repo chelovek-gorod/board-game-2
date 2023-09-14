@@ -1,7 +1,13 @@
 import { SPRITES_PATH, SPRITES, SOUNDS_PATH, SOUNDS } from './assets';
 
-export function loader(callback) {
+const loadState = {
+    files : 0,
+    loaded : 0,
+}
+
+export function loader(callbackDone, callbackProgress) {
     let assetsNumber = Object.keys(SPRITES).length + Object.keys(SOUNDS).length;
+    loadState.files = assetsNumber;
     
     for (const sprite in SPRITES) {
         const image = new Image();
@@ -22,7 +28,9 @@ export function loader(callback) {
     }
 
     function updateLoadingState() {
+        loadState.loaded++;
+        callbackProgress(loadState);
         assetsNumber--;
-        if (!assetsNumber) callback();
+        if (!assetsNumber) callbackDone();
     }
 };

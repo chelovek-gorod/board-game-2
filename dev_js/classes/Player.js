@@ -2,6 +2,7 @@ import { SOUNDS, SPRITES } from "../assets";
 import constants from "../constants";
 import { game } from "../main";
 import VIEW from "../render";
+import { playSound } from "../sound";
 import Timer from "./Timer";
 import Token from "./Token";
 
@@ -68,7 +69,7 @@ class Player {
     }
 
     throwDices() {
-        SOUNDS.dice2.play();
+        playSound(SOUNDS.dice2);
         game.dices.forEach(dice => dice.throw());
         this.isGetDouble = game.dices[0].value === game.dices[1].value;
         if (game.dices[0].value >= game.dices[1].value) this.dices = [1, 0];
@@ -94,11 +95,44 @@ class Player {
 
         if (!availableTokens.length) {
             new Timer(() => this.diceFinished(), constants.diceActiveDuration);
-        } else if (this.isBot) this.botActivation(availableTokens.sort(() => Math.random() - 0.5));
+        } else if (this.isBot) new Timer(() => this.botActivation(availableTokens), constants.diceActiveDuration);
     }
 
     botActivation(availableTokens) {
-        new Timer(() => availableTokens[0].activation(), constants.diceActiveDuration);
+        const availableTokensLength = availableTokens.length;
+        if (availableTokensLength === 1) availableTokens[0].activation();
+        else {
+            availableTokens.sort(() => Math.random() - 0.5);
+            const priorityArray = [];
+            const normalArray = [];
+            const badArray = [];
+            for (let i = 0; i < availableTokensLength; i++) {
+                const token = availableTokens.pop();
+                const tokenLastStep = token.path[token.path.length - 1];
+
+                // if reserve or home or toilet
+                if (tokenLastStep.container === token.reserve) priorityArray.push(token);
+                else if (tokenLastStep.container === token.home) priorityArray.push(token);
+                else if (tokenLastStep.container !== game.board.ceils) normalArray.push(token);
+                // if on main board -> check ceil type
+                else {
+                    switch (game.board.ceils[tokenLastStep.index].type) {
+                        case 'corner' : priorityArray.push(token); break;
+                        case 'toilet' : badArray.push(token); break;
+                        case 'exit' : normalArray.push(token); break;
+                        case 'empty': normalArray.push(token); break;
+                        case 'home': badArray.push(token); break;
+                        default: /* port */
+                        const portTargetIndex = game.board.ceils[tokenLastStep.index].targetIndex;
+                        if(portTargetIndex > token.index && token.index < 44) priorityArray.push(token);
+                        else badArray.push(token); break;
+                    }
+                }
+            }
+            if (priorityArray.length) priorityArray[0].activation();
+            else if (normalArray.length) normalArray[0].activation();
+            else badArray[0].activation();
+        }
     }
 
     diceFinished() {

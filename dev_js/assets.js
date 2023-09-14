@@ -1,6 +1,6 @@
 export const SPRITES_PATH = './src/images/';
 export const SOUNDS_PATH = './src/sounds/';
-export const MUSIC_PATH = './src/MUSIC/';
+export const MUSIC_PATH = './src/music/';
 
 export const SPRITES = {
     menuLogo: 'MarsGameLogoDarkBg.png',
@@ -46,6 +46,10 @@ export const SPRITES = {
 };
 
 export const SOUNDS = {
+    menuClick: 'se_menu_click.mp3',
+    menuEffects: 'se_menu_effects.mp3',
+    menuMusic: 'se_menu_music.mp3',
+    menuStart: 'se_menu_start.mp3',
     dice: 'se_dices.mp3',
     dice2: 'se_dices2.mp3',
     startToken: 'se_start_token.mp3',
@@ -53,7 +57,4 @@ export const SOUNDS = {
     step1: 'se_step_1.mp3',
     step2: 'se_step_2.mp3',
     step3: 'se_step_3.mp3',
-    step4: 'se_step_4.mp3',
-    step5: 'se_step_5.mp3',
-    step6: 'se_step_6.mp3',
 };

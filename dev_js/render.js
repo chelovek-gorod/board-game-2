@@ -1,4 +1,5 @@
 import View from './classes/View';
+import { playMusic } from './sound';
 
 const VIEW = new View();
 
@@ -37,10 +38,12 @@ document.body.onblur = stopRender;
 function showSell() {
     divShell.style.display = 'flex';
     divShell.innerHTML = '<div><nobr>CLICK SCREEN</nobr> FOR <nobr>START GAME</nobr></div>';
+    playMusic(false);
 }
 
 function hideSell() {
     divShell.style.display = 'none';
+    playMusic();
 }
 
 function startRender() {

@@ -98,12 +98,14 @@ body {
 }
 
 .second {
-    /*background-color: #0000ff40;*/
+    font-size: 18px;
 }
 
+/*
 .first {
-    /*background-color: #00ff0040;*/
+    background-color: #00ff0040;
 }
+*/
 
 #canvas {
     display: block;
