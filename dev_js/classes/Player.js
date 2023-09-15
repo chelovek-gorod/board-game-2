@@ -135,7 +135,7 @@ class Player {
             || (token.container !== token.home && target.container === token.home)
             // go to port forward
             || (target.container === game.board.ceils && target.container[target.index].type === 'port'
-            && target.container[target.index].targetIndex % 2 === 1 /* 0 - back; 1 - forward */)) {
+            && target.container[target.index].targetIndex % 2 === 0 /* 1 - back; 0 - forward */)) {
                 goodArray.push(token);
             } else
             // (0)
@@ -148,7 +148,7 @@ class Player {
             if ((target.container === game.board.ceils && target.container[target.index].type === 'home')
             // go to port back
             || (target.container === game.board.ceils && target.container[target.index].type === 'port'
-            && target.container[target.index].targetIndex % 2 === 0 /* 0 - back; 1 - forward */)) {
+            && target.container[target.index].targetIndex % 2 === 1 /* 1 - back; 0 - forward */)) {
                 badArray.unshift(token);
             } else
             // (2)

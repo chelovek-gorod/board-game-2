@@ -6,12 +6,13 @@ const soundState = {
 }
 
 const music = [
-    'bgm_tavern_1.mp3',
-    'bgm_tavern_2.mp3',
-    'bgm_tavern_3.mp3',
-    'bgm_tavern_4.mp3',
-    'bgm_tavern_5.mp3',
+    'bgm_western_0.mp3',
+    'bgm_western_1.mp3',
+    'bgm_western_2.mp3',
+    'bgm_western_3.mp3',
+    'bgm_western_4.mp3',
 ]
+music.sort(() => Math.random() - 0.5);
 let musicIndex = Math.floor(Math.random() * music.length);
 
 const backgroundMusic = new Audio();
