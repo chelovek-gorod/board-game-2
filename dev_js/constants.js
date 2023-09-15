@@ -7,7 +7,7 @@ const constants = {
 
     diceThrowDuration: 1000,
     diceActiveDuration: 800,
-    tokenStepDuration: 400,
+    tokenStepDuration: 600,
     tokenPointerScaleDuration: 600,
 };
 

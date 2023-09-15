@@ -99,43 +99,76 @@ class Player {
     }
 
     botActivation(availableTokens) {
-        const availableTokensLength = availableTokens.length;
-        if (availableTokensLength === 1) availableTokens[0].activation();
-        else {
-            availableTokens.sort(() => Math.random() - 0.5);
-            const priorityArray = [];
-            const normalArray = [];
-            const badArray = [];
-            for (let i = 0; i < availableTokensLength; i++) {
-                const token = availableTokens.pop();
-                const tokenLastStep = token.path[token.path.length - 1];
-
-                // if reserve or home or toilet
-                if (tokenLastStep.container === token.reserve) priorityArray.push(token);
-                else if (tokenLastStep.container === token.home) priorityArray.push(token);
-                else if (tokenLastStep.container !== game.board.ceils) normalArray.push(token);
-                // if on main board -> check ceil type
-                else {
-                    switch (game.board.ceils[tokenLastStep.index].type) {
-                        case 'corner' : priorityArray.push(token); break;
-                        case 'toilet' : badArray.push(token); break;
-                        case 'exit' : normalArray.push(token); break;
-                        case 'empty': normalArray.push(token); break;
-                        case 'home': badArray.push(token); break;
-                        default: /* port */
-                        const portTargetIndex = game.board.ceils[tokenLastStep.index].targetIndex;
-                        if(portTargetIndex > token.index && token.index < 44) priorityArray.push(token);
-                        else badArray.push(token); break;
-                    }
-                }
-            }
-            if (priorityArray.length) priorityArray[0].activation();
-            else if (normalArray.length) normalArray[0].activation();
-            else badArray[0].activation();
+        // one token available
+        if (availableTokens.length === 1) {
+            availableTokens[0].activation();
+            return;
         }
+
+        // first [0] index -> is activated
+        const goodArray = []; 
+        const normalArray = []; 
+        const badArray = [];
+
+        availableTokens.sort(() => Math.random() - 0.5);
+
+        console.log('available tokens:', availableTokens.length)
+
+        for (let i = 0; i < availableTokens.length; i++) {
+            const token = availableTokens[i];
+            const target = token.path[token.path.length - 1];
+
+            
+            console.log(i, 'current:',
+                (token.container.length === 4) ? (token.container === token.home) ? 'home' : 'base' :
+                (target.container.length === 3) ? 'toilet' : 'main', token.index,
+                'target:', 
+                (target.container.length === 4) ? (target.container === token.home) ? 'home' : 'base' :
+                (target.container.length === 3) ? 'toilet' : 'main', target.index);
+
+            // (4)
+            // check entry in start ceil
+            if (token.container === token.reserve
+            // check go to corner
+            || (target.container === game.board.ceils && target.container[target.index].type === 'corner')
+            // check entry in home 
+            || (token.container !== token.home && target.container === token.home)
+            // go to port forward
+            || (target.container === game.board.ceils && target.container[target.index].type === 'port'
+            && target.container[target.index].targetIndex % 2 === 1 /* 0 - back; 1 - forward */)) {
+                goodArray.push(token);
+            } else
+            // (0)
+            // check entry in toilet
+            if (game.board.toilets.includes(target.container) && target.index === 0) {
+                badArray.push(token);
+            } else
+            // (1)
+            // go to any start ceil
+            if ((target.container === game.board.ceils && target.container[target.index].type === 'home')
+            // go to port back
+            || (target.container === game.board.ceils && target.container[target.index].type === 'port'
+            && target.container[target.index].targetIndex % 2 === 0 /* 0 - back; 1 - forward */)) {
+                badArray.unshift(token);
+            } else
+            // (2)
+            // check ceil under toilet exit
+            if (target.container === game.board.ceils && target.container[target.index].type === 'exit') {
+                normalArray.push(token);
+            }
+            // (3)
+            else {
+                normalArray.unshift(token);
+            }
+        }
+
+        if (goodArray.length) goodArray[0].activation();
+        else if (normalArray.length) normalArray[0].activation();
+        else badArray[0].activation();
     }
 
     diceFinished() {
+        console.log('#######')
         this.dice.isActive = false;
         this.dice.pointer.setMinSize();
         if (this.dices.length && !game.isEnd) this.useDice();

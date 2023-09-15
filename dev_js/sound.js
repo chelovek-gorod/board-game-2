@@ -25,17 +25,29 @@ export function setSoundState(state) {
 }
 
 let stepSoundIndex = Math.floor(Math.random() * 4);
+let toiletSoundIndex = Math.floor(Math.random() * 4);
+
 export function playSound(sound) {
     if (!soundState.effects) return;
 
-    if (!sound) {
-        SOUNDS['step' + stepSoundIndex].play();
-        stepSoundIndex++;
-        if (stepSoundIndex > 3) stepSoundIndex = 0;
-    } else {
-        sound.currentTime = 0;
-        sound.play();
+    if (typeof sound === 'string') {
+        switch (sound) {
+            case 'step' : 
+                SOUNDS['step' + stepSoundIndex].play();
+                stepSoundIndex++;
+                if (stepSoundIndex > 3) stepSoundIndex = 0;
+                break;
+            case 'toilet' : 
+                SOUNDS['toilet' + toiletSoundIndex].play();
+                toiletSoundIndex++;
+                if (toiletSoundIndex > 3) toiletSoundIndex = 0;
+                break;
+        }
+        return;
     }
+
+    sound.currentTime = 0;
+    sound.play();
 }
 
 export function playMusic(isAvailable = true) {
@@ -45,7 +57,7 @@ export function playMusic(isAvailable = true) {
     }
 
     backgroundMusic.src = MUSIC_PATH + music[musicIndex];
-    backgroundMusic.volume = 0.1;
+    backgroundMusic.volume = 0.4;
     backgroundMusic.play();
 
     musicIndex++;

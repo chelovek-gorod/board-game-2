@@ -223,7 +223,8 @@ class Token {
                 break;
             }
         }
-        this.startStep(); console.log({...this});
+        playSound(SOUNDS.destroy);
+        this.startStep();
     }
 
     activation() {
@@ -258,7 +259,21 @@ class Token {
 
         switch (this.container) {
             case this.reserve : playSound(SOUNDS.startToken); break;
-        }
+            case game.board.toiletTop : 
+            case game.board.toiletRight : 
+            case game.board.toiletBottom : 
+            case game.board.toiletLeft :
+                if (this.target.container === game.board.ceils) playSound(SOUNDS.toiletExit);
+                else playSound('toilet');
+                break;
+            case this.home : playSound(SOUNDS.home); break;
+            default:
+                if (this.target.container === game.board.toiletTop
+                || this.target.container === game.board.toiletRight
+                || this.target.container === game.board.toiletBottom
+                || this.target.container === game.board.toiletLeft) playSound(SOUNDS.toiletStart);
+                if (this.target.container === game.board.ports) playSound(SOUNDS.port);
+        } 
     }
 
     setDirection() {
@@ -292,7 +307,7 @@ class Token {
             if (otherToken) otherToken.pushPathToReserve();
         }
 
-        playSound();
+        playSound('step');
 
         if (this.path.length) this.startStep();
         else this.endMove();
@@ -320,6 +335,8 @@ class Token {
         // check corners win
         if (this.container === game.board.ceils
         && this.container[this.index].type === 'corner') {
+            playSound(SOUNDS.corner);
+
             let allOnCorners = true;
             this.player.tokens.forEach( token => {
                 if (token.container !== game.board.ceils
@@ -327,17 +344,6 @@ class Token {
             });
             if (allOnCorners) game.isEnd = true;
         }
-
-        /*
-        // check pushing in toilet
-        if (this.container === game.board.toiletTop
-        || this.container === game.board.toiletRight
-        || this.container === game.board.toiletBottom
-        || this.container === game.board.toiletLeft) { console.log('pushing in toilet')
-            const otherToken = this.checkCeilAllTokens(this.container, this.index);
-            if (otherToken) otherToken.pushPathInToilet();
-        }
-        */
 
         if (this.isActive) {
             this.isActive = false;

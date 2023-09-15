@@ -11,7 +11,7 @@ const results = [
 
 function checkAllTokensInReserve() {
     let isAllTokensInReserve = true;
-    const player = game.players[game.currentTurn]; console.log(game.players);
+    const player = game.players[game.currentTurn];
     if (!player) return false; /* at set start value before players init */
 
     player.tokens.forEach(token => {

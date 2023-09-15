@@ -46,7 +46,8 @@ export const SPRITES = {
 };
 
 export const SOUNDS = {
-    menuClick: 'se_menu_click.mp3',
+    menuToken: 'se_menu_click.mp3',
+    menuClick: 'se_menu_token.mp3',
     menuEffects: 'se_menu_effects.mp3',
     menuMusic: 'se_menu_music.mp3',
     menuStart: 'se_menu_start.mp3',
@@ -57,4 +58,14 @@ export const SOUNDS = {
     step1: 'se_step_1.mp3',
     step2: 'se_step_2.mp3',
     step3: 'se_step_3.mp3',
+    toiletStart: 'se_toilet_start.mp3',
+    toilet0: 'se_toilet_0.mp3',
+    toilet1: 'se_toilet_1.mp3',
+    toilet2: 'se_toilet_2.mp3',
+    toilet3: 'se_toilet_3.mp3',
+    toiletExit: 'se_toilet_exit.mp3',
+    home: 'se_home.mp3',
+    corner: 'se_corner.mp3',
+    port: 'se_port.mp3',
+    destroy: 'se_destroy.mp3',
 };

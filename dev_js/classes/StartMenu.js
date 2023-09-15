@@ -212,7 +212,7 @@ class StartMenu {
     }
 
     clickToken(index) {
-        playSound(SOUNDS.menuClick);
+        playSound(SOUNDS.menuToken);
 
         if (!this.state.players[index].isUsed) {
             this.state.players[index].isUsed = true;
