@@ -8,6 +8,7 @@ import VIEW from './render';
 import constants from './constants';
 import Timer from './classes/Timer';
 import StartMenu from './classes/StartMenu';
+import EndMenu from './classes/EndMenu';
 
 loader(initGame, loadingProgress);
 
@@ -46,7 +47,18 @@ export const game = {
     },
 
     end() {
-        secondDiv.innerHTML = `PLAYER ${this.currentTurn} WIN!`;
+        game.isStart = false;
+        const endMenu = new EndMenu(() => {
+            game.menu = null;
+            VIEW.layers.forEach(layer => layer.clear());
+            initGame();
+        }, {
+            type : (this.players[this.currentTurn].isBot) ? 'COMPUTER': 'PLAYER',
+            image : this.players[this.currentTurn].tokenImage
+        });
+        game.menu = endMenu
+        menuLayer.add(endMenu);
+        //secondDiv.innerHTML = `PLAYER ${this.currentTurn} WIN!`;
     }
 };
 

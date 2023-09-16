@@ -58,6 +58,21 @@ class StartMenu {
         this.btnEffects= {x: this.underlay4.x + 450, y: this.underlay4.y + 360, width: this.button.width, height: this.button.height};
         this.btnStart  = {x: VIEW.x - 360,           y: this.underlay4.y + 360, width: this.underlay.width, height: this.underlay.height};
 
+        this.playerTextStyle = {
+            size: 60,
+            family: 'clip',
+            weight: '600',
+            color: '#ffffff',
+            align: 'center'
+        };
+
+        this.playerLabels = [
+            new Text('', this.underlay1.x + 360, this.underlay1.y + 200, this.playerTextStyle),
+            new Text('', this.underlay2.x + 360, this.underlay2.y + 200, this.playerTextStyle),
+            new Text('', this.underlay3.x + 360, this.underlay3.y + 200, this.playerTextStyle),
+            new Text('', this.underlay4.x + 360, this.underlay4.y + 200, this.playerTextStyle),
+        ];
+
         this.buttonText = new Text(
             'START', this.btnStart.x + 360, this.btnStart.y + 10, {
                 size: 140,
@@ -89,6 +104,24 @@ class StartMenu {
         this.render();
     }
 
+    updatePlayerLabels() {
+        function getText(isUsed, isBot, text) {
+
+            return `${(isUsed) ? (isBot) ? 'computer' : 'player' : 'no one'} ${text}`;
+        }
+
+        this.state.players.forEach((player, index) => {
+            switch(index) {
+                case 0 : this.playerLabels[index].render(getText(player.isUsed, player.isBot, 'on bottom side')); break;
+                case 1 : this.playerLabels[index].render(getText(player.isUsed, player.isBot, 'on left side')); break;
+                case 2 : this.playerLabels[index].render(getText(player.isUsed, player.isBot, 'on top side')); break;
+                case 3 : this.playerLabels[index].render(getText(player.isUsed, player.isBot, 'on right side')); break;
+            }
+            console.log(index, this.playerLabels[index]);
+            this.playerLabels[index].draw(this.context);
+        });
+    }
+
     getPlayerImage(index) {
         if (!this.state.players[index].isUsed) return SPRITES.menuNoUser;
         else return (this.state.players[index].isBot) ? SPRITES.menuComputer : SPRITES.menuPlayer;
@@ -114,6 +147,8 @@ class StartMenu {
         this.context.drawImage( SPRITES.pointerPlayerH, 0, 0, 480, 120, this.underlay3.x, this.underlay3.y, this.underlay.width, this.underlay.height);
         this.context.drawImage( SPRITES.pointerPlayerH, 0, 0, 480, 120, this.underlay4.x, this.underlay4.y, this.underlay.width, this.underlay.height);
         
+        this.updatePlayerLabels();
+
         this.context.drawImage( this.getPlayerImage(0),   this.btnP1User.x,  this.btnP1User.y,  this.button.width,   this.button.height);
         this.context.drawImage( this.getTokenImage(0),    this.btnP1Token.x, this.btnP1Token.y, this.button.width,   this.button.height);
 

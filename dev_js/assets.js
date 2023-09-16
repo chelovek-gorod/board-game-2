@@ -68,4 +68,5 @@ export const SOUNDS = {
     corner: 'se_corner.mp3',
     port: 'se_port.mp3',
     destroy: 'se_destroy.mp3',
+    final: 'se_final.mp3',
 };
