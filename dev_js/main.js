@@ -49,11 +49,19 @@ export const game = {
     end() {
         game.isStart = false;
         const endMenu = new EndMenu(() => {
-            game.menu = null;
+            game.tokens = [];
+            game.isStart = false;
+            game.players = [];
+            game.currentTurn = 0;
+            game.board = null;
+            game.dices = [];
+            game.isEnd = false;
+
             VIEW.layers.forEach(layer => layer.clear());
+            
             initGame();
         }, {
-            type : (this.players[this.currentTurn].isBot) ? 'COMPUTER': 'PLAYER',
+            isBot : (this.players[this.currentTurn].isBot),
             image : this.players[this.currentTurn].tokenImage
         });
         game.menu = endMenu
@@ -63,6 +71,7 @@ export const game = {
 };
 
 function initGame() {
+    game.menu = null;
     secondDiv.innerHTML = '';
     game.tokens = [
         SPRITES.tokenBomb, SPRITES.tokenButton, SPRITES.tokenCap, SPRITES.tokenCoin, SPRITES.tokenCrystal,

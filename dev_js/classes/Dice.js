@@ -9,15 +9,18 @@ const results = [
     /* START */
 ]
 
-function checkAllTokensInReserve() {
-    let isAllTokensInReserve = true;
+function checkChit() {
+    let tokensInReserve = 0;
+    let tokensOnMain = 0;
     const player = game.players[game.currentTurn];
     if (!player) return false; /* at set start value before players init */
 
     player.tokens.forEach(token => {
-        if (token.container !== token.reserve) isAllTokensInReserve = false;
+        if (token.container === token.reserve) tokensInReserve++;
+        if (token.container === game.board.ceils) tokensOnMain++;
     });
-    return isAllTokensInReserve;
+
+    return tokensInReserve > tokensOnMain;
 }
 
 class Dice {
@@ -43,7 +46,7 @@ class Dice {
     getNewValue() {
         /* chit */
         //const value = (results.length) ? results.shift() : Math.ceil(Math.random() * 6);
-        const value = (checkAllTokensInReserve() && Math.random() < 0.5) ? 6 : Math.ceil(Math.random() * 6);
+        const value = (checkChit() && Math.random() < 0.25) ? 6 : Math.ceil(Math.random() * 6);
 
         switch(value) {
             case 1: 

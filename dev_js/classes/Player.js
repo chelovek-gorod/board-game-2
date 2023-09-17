@@ -131,8 +131,8 @@ class Player {
             if (token.container === token.reserve
             // check go to corner
             || (target.container === game.board.ceils && target.container[target.index].type === 'corner')
-            // check entry in home 
-            || (token.container !== token.home && target.container === token.home)
+            // check entry in home or move in home
+            || (target.container === token.home)
             // go to port forward
             || (target.container === game.board.ceils && target.container[target.index].type === 'port'
             && target.container[target.index].targetIndex % 2 === 0 /* 1 - back; 0 - forward */)) {
@@ -148,7 +148,9 @@ class Player {
             if ((target.container === game.board.ceils && target.container[target.index].type === 'home')
             // go to port back
             || (target.container === game.board.ceils && target.container[target.index].type === 'port'
-            && target.container[target.index].targetIndex % 2 === 1 /* 1 - back; 0 - forward */)) {
+            && target.container[target.index].targetIndex % 2 === 1 /* 1 - back; 0 - forward */)
+            // now on corner
+            || (this.container === game.board.ceils && this.container[this.index].type === 'corner')) {
                 badArray.unshift(token);
             } else
             // (2)

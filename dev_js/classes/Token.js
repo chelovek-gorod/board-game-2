@@ -266,7 +266,7 @@ class Token {
                 if (this.target.container === game.board.ceils) playSound(SOUNDS.toiletExit);
                 else playSound('toilet');
                 break;
-            case this.home : playSound(SOUNDS.home); break;
+            case this.home : if (this.index === 0) playSound(SOUNDS.home); break;
             default:
                 if (this.target.container === game.board.toiletTop
                 || this.target.container === game.board.toiletRight
