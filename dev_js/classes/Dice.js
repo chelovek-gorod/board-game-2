@@ -73,7 +73,7 @@ class Dice {
                 this.framePoint.x = Math.floor(Math.random() * 4) * 4 * this.frameSize;
                 this.framePoint.y = 8 * this.frameSize;
                 break;
-            default: console.warn('error in dice value');
+            default: value = 6;
         }
         return value;
     }

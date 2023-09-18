@@ -117,7 +117,6 @@ class StartMenu {
                 case 2 : this.playerLabels[index].render(getText(player.isUsed, player.isBot, 'on top side')); break;
                 case 3 : this.playerLabels[index].render(getText(player.isUsed, player.isBot, 'on right side')); break;
             }
-            console.log(index, this.playerLabels[index]);
             this.playerLabels[index].draw(this.context);
         });
     }

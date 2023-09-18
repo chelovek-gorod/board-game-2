@@ -22,6 +22,7 @@ class Player {
         this.dices = [];
         this.dice = null;
         this.isGetDouble = false;
+        this.turns = 0;
         this.startPoint = startPoint;
         this.tokens = [];
 
@@ -68,12 +69,54 @@ class Player {
         this.throwDices();
     }
 
+    //set game state
+    setState() {
+        const players = [];
+        game.players.forEach(player => {
+            const p = {
+                isBot: player.isBot,
+                tokenIndex: game.tokens.indexOf(player.tokenImage),
+                startPoint: player.startPoint,
+                tokens: []
+            }
+            player.tokens.forEach(token => {
+                let container = '';
+                switch (token.container) {
+                    case token.reserve : container = 'reserve'; break;
+                    case token.home : container = 'home'; break;
+                    case game.board.ceils : container = 'main'; break;
+                    default : container = 'toilet';
+                } 
+                const t = {
+                    index: token.index,
+                    container: container
+                }
+                p.tokens.push(t);
+            })
+            players.push(p);
+        })
+        const state = {
+            players: players,
+            turn: game.currentTurn,
+            throws: this.turns,
+            dices: [
+                game.dices[0].value,
+                game.dices[1].value
+            ]
+        };
+        //console.log(JSON.stringify(state));
+    }
+
     throwDices() {
+        this.turns++;
         playSound(SOUNDS.dice2);
         game.dices.forEach(dice => dice.throw());
         this.isGetDouble = game.dices[0].value === game.dices[1].value;
         if (game.dices[0].value >= game.dices[1].value) this.dices = [1, 0];
         else this.dices = [0, 1];
+
+        //set game state
+        this.setState()
 
         //setTimeout();
         new Timer(() => this.useDice(), constants.diceThrowDuration);
@@ -112,19 +155,26 @@ class Player {
 
         availableTokens.sort(() => Math.random() - 0.5);
 
-        console.log('available tokens:', availableTokens.length)
-
         for (let i = 0; i < availableTokens.length; i++) {
             const token = availableTokens[i];
             const target = token.path[token.path.length - 1];
 
-            
+            // TEST
+            if (game.board.toilets.includes(token.container)) {
+                if (token.checkCeilPlayerTokens(game.board.ceils, token.container[2].targetIndex, token.player))
+                    console.log('MOVE IN TOILET AND FRIENDLY TOKEN ON EXIT');
+                else
+                    console.log('JUST MOVE IN TOILET');
+            }
+
+            /*
             console.log(i, 'current:',
                 (token.container.length === 4) ? (token.container === token.home) ? 'home' : 'base' :
                 (target.container.length === 3) ? 'toilet' : 'main', token.index,
                 'target:', 
                 (target.container.length === 4) ? (target.container === token.home) ? 'home' : 'base' :
                 (target.container.length === 3) ? 'toilet' : 'main', target.index);
+            */
 
             // (4)
             // check entry in start ceil
@@ -140,7 +190,10 @@ class Player {
             } else
             // (0)
             // check entry in toilet
-            if (game.board.toilets.includes(target.container) && target.index === 0) {
+            if ((game.board.toilets.includes(target.container) && target.index === 0)
+            // check if in toilet and friendly token under exit
+            || (game.board.toilets.includes(token.container)
+            && token.checkCeilPlayerTokens(game.board.ceils, token.container[2].targetIndex, token.player))) {
                 badArray.push(token);
             } else
             // (1)
@@ -170,15 +223,15 @@ class Player {
     }
 
     diceFinished() {
-        console.log('#######')
         this.dice.isActive = false;
         this.dice.pointer.setMinSize();
         if (this.dices.length && !game.isEnd) this.useDice();
-        else if (this.isGetDouble && !game.isEnd) this.throwDices();
+        else if (this.isGetDouble && !game.isEnd && this.turns < 3) this.throwDices();
         else this.endTurn();
     }
 
     endTurn() { /*console.log('end turn');*/
+        this.turns = 0;
         this.layer.remove(this);
         game.nextTurn();
     }

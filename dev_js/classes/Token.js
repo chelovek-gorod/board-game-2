@@ -103,7 +103,6 @@ class Token {
     }
 
     checkPathInHome(points, index = this.index) {
-        console.log(points, index)
         const maxSteps = (this.home.length - 1) - index; // 3 - 0 -> 3; 3 - 1 -> 2; 3 - 2 -> 1; 3 - 3 -> 0
         if (maxSteps <= 0 || points > maxSteps) return this.path = [];
         const startIndex = index + 1;
@@ -113,7 +112,6 @@ class Token {
             // else (not need after return)   
             this.addPathPoint(this.home, i);
         }
-        console.log('path after inrty home',[...this.path]);
     }
 
     checkPathInMainBoard(points) {
@@ -199,7 +197,7 @@ class Token {
         })
     }
 
-    pushPathInToilet() { console.log('pushPathInToilet');
+    pushPathInToilet() {
         this.path = [];
         // if it is last toilet point
         if ('targetIndex' in this.container[this.index]) {
@@ -207,10 +205,10 @@ class Token {
         } else {
             this.addPathPoint(this.container, this.index + 1);
         }
-        this.startStep(); console.log({...this});
+        this.startStep();
     }
 
-    pushPathToReserve() { console.log('pushPathToReserve');
+    pushPathToReserve() {
         this.path = [];
         const reserveLength = this.reserve.length;
         const reserve = new Array(reserveLength);

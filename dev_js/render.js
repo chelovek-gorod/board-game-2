@@ -51,15 +51,12 @@ function startRender() {
     isRendering = true;
     previousTime = performance.now();
     renderId = requestAnimationFrame(render);
-
-    console.log('start render');
 }
 
 function stopRender() {
     showSell()
     isRendering = false;
     cancelAnimationFrame(renderId);
-    console.log('stop render');
 }
 
 let previousTime = performance.now();

@@ -47,7 +47,6 @@ class EndMenu {
     }
 
     click(x, y) {
-        console.log(x, y)
         if (x > this.button.x
         && x < this.button.x + this.button.width
         && y > this.button.y
