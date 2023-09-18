@@ -6,9 +6,10 @@ import { playSound, setSoundState } from "../sound";
 import Text from "./Text";
 
 class StartMenu {
-    constructor(startGameCallback, state) {
+    constructor(startGameCallback) {
+        this.isStart = false;
         this.startGameCallback = startGameCallback;
-        this.state = state || {
+        this.state = {
             players: [
                 /* if (tokenIndex === Infinity) random */
                 { isUsed: true,  isBot: false, tokenIndex: 2},
@@ -74,7 +75,8 @@ class StartMenu {
         ];
 
         this.buttonText = new Text(
-            'START', this.btnStart.x + 360, this.btnStart.y + 10, {
+            'СТАРТ', //'START',
+            this.btnStart.x + 360, this.btnStart.y + 10, {
                 size: 140,
                 family: 'clip',
                 weight: '600',
@@ -84,7 +86,8 @@ class StartMenu {
         );
 
         this.labelText = new Text(
-            'PARCHIS', VIEW.x, VIEW.y - 960, {
+            'ПАРЧИС', //'PARCHIS', 
+            VIEW.x, VIEW.y - 960, {
                 size: 540,
                 family: 'clip',
                 weight: '600',
@@ -93,7 +96,20 @@ class StartMenu {
             }
         );
 
-        this.versionText = new Text(`VERSION: ${constants.version}`, 160, this.canvas.height - 70, {
+        this.labelSubText = new Text(
+            'Квадрат', //'Square', 
+            VIEW.x + 320, VIEW.y - 600, {
+                size: 210,
+                family: 'clip',
+                weight: '600',
+                color: '#ff00bc',
+                align: 'center'
+            }
+        );
+
+        this.versionText = new Text(
+            `ВЕРСИЯ: ${constants.version}`, // `VERSION: ${constants.version}`,
+            160, this.canvas.height - 70, {
             size: 68,
             family: 'clip',
             weight: '600',
@@ -106,16 +122,22 @@ class StartMenu {
 
     updatePlayerLabels() {
         function getText(isUsed, isBot, text) {
-
-            return `${(isUsed) ? (isBot) ? 'computer' : 'player' : 'no one'} ${text}`;
+            return `${(isUsed) ? (isBot) ? 'компьютер' : 'игрок' : 'без игрока'} ${text}`;
+            //return `${(isUsed) ? (isBot) ? 'computer' : 'player' : 'no one'} ${text}`;
         }
 
         this.state.players.forEach((player, index) => {
             switch(index) {
+                /*
                 case 0 : this.playerLabels[index].render(getText(player.isUsed, player.isBot, 'on bottom side')); break;
                 case 1 : this.playerLabels[index].render(getText(player.isUsed, player.isBot, 'on left side')); break;
                 case 2 : this.playerLabels[index].render(getText(player.isUsed, player.isBot, 'on top side')); break;
                 case 3 : this.playerLabels[index].render(getText(player.isUsed, player.isBot, 'on right side')); break;
+                */
+                case 0 : this.playerLabels[index].render(getText(player.isUsed, player.isBot, 'снизу')); break;
+                case 1 : this.playerLabels[index].render(getText(player.isUsed, player.isBot, 'слева')); break;
+                case 2 : this.playerLabels[index].render(getText(player.isUsed, player.isBot, 'сверху')); break;
+                case 3 : this.playerLabels[index].render(getText(player.isUsed, player.isBot, 'справа')); break;
             }
             this.playerLabels[index].draw(this.context);
         });
@@ -139,7 +161,8 @@ class StartMenu {
 
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-        this.labelText.draw(this.context)
+        this.labelText.draw(this.context);
+        this.labelSubText.draw(this.context);
 
         this.context.drawImage( SPRITES.pointerPlayerH, 0, 0, 480, 120, this.underlay1.x, this.underlay1.y, this.underlay.width, this.underlay.height);
         this.context.drawImage( SPRITES.pointerPlayerH, 0, 0, 480, 120, this.underlay2.x, this.underlay2.y, this.underlay.width, this.underlay.height);
@@ -184,6 +207,7 @@ class StartMenu {
     }
 
     click(x, y) {
+        if (this.isStart) return;
         // start game
         if (this.checkClickButton(x, y, this.btnStart)
         && this.state.start) this.startGame();
@@ -260,6 +284,7 @@ class StartMenu {
     }
 
     startGame() {
+        this.isStart = true;
         playSound(SOUNDS.menuStart);
         this.state.players.forEach(player=> {
             if(!isFinite(player.tokenIndex)) {

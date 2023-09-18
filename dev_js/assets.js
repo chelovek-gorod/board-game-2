@@ -3,6 +3,17 @@ export const SOUNDS_PATH = './src/sounds/';
 export const MUSIC_PATH = './src/music/';
 
 export const SPRITES = {
+    halp1: 'help_01_920x920px.png',
+    halp2: 'help_02_920x920px.png',
+    halp3: 'help_03_920x920px.png',
+    halp4: 'help_04_920x920px.png',
+    halp5: 'help_05_920x920px.png',
+    halp6: 'help_06_920x920px.png',
+    halp7: 'help_07_920x920px.png',
+    halp8: 'help_08_920x920px.png',
+    halp9: 'help_09_920x920px.png',
+    halp10: 'help_10_920x920px.png',
+
     menuLogo: 'MarsGameLogoDarkBg.png',
     menuButton: 'options_button_128x128px.png',
     menuButtonLock: 'options_button_lock_128x128px.png',

@@ -12,12 +12,19 @@ showSell();
 let isRendering = true;
 let isCanvasVisible = false;
 
+const halpDiv = document.getElementById('help');
+const imageHalpDiv = document.getElementById('imageHalp');
+
 document.body.onresize = () => {
     VIEW.resize();
     if (document.fullscreenEnabled
     && !document.fullscreenElement) {
         stopRender();
     }
+
+    halpDiv.style.opacity = 0;
+    halpDiv.style.display = 'none';
+    imageHalpDiv.innerHTML = '';
 };
 
 divShell.onclick = () => {
@@ -37,7 +44,8 @@ document.body.onblur = stopRender;
 
 function showSell() {
     divShell.style.display = 'flex';
-    divShell.innerHTML = '<div><nobr>CLICK SCREEN</nobr> FOR <nobr>START GAME</nobr></div>';
+    //divShell.innerHTML = '<div><nobr>CLICK SCREEN</nobr> FOR <nobr>START GAME</nobr></div>';
+    divShell.innerHTML = '<div><nobr> КЛИКНИТЕ </nobr>ПО ЭКРАНУ<nobr>ДЛЯ ПРОДОЛЖЕНИЯ</nobr></div>';
     playMusic(false);
 }
 

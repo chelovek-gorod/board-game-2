@@ -19,9 +19,10 @@ const backgroundMusic = new Audio();
 backgroundMusic.addEventListener('ended', playMusic);
 
 export function setSoundState(state) {
+    const previousMusicState = soundState.music;
     soundState.music = state.music;
     soundState.effects = state.effects;
-    if (soundState.music) playMusic();
+    if (!previousMusicState && soundState.music) playMusic();
     else playMusic(false);
 }
 

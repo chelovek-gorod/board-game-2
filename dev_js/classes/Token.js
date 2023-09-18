@@ -264,7 +264,6 @@ class Token {
                 if (this.target.container === game.board.ceils) playSound(SOUNDS.toiletExit);
                 else playSound('toilet');
                 break;
-            case this.home : if (this.index === 0) playSound(SOUNDS.home); break;
             default:
                 if (this.target.container === game.board.toiletTop
                 || this.target.container === game.board.toiletRight
@@ -305,7 +304,8 @@ class Token {
             if (otherToken) otherToken.pushPathToReserve();
         }
 
-        playSound('step');
+        if (this.container === this.home && this.index === 0) playSound(SOUNDS.home);
+        else playSound('step');
 
         if (this.path.length) this.startStep();
         else this.endMove();

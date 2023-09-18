@@ -69,44 +69,6 @@ class Player {
         this.throwDices();
     }
 
-    //set game state
-    setState() {
-        const players = [];
-        game.players.forEach(player => {
-            const p = {
-                isBot: player.isBot,
-                tokenIndex: game.tokens.indexOf(player.tokenImage),
-                startPoint: player.startPoint,
-                tokens: []
-            }
-            player.tokens.forEach(token => {
-                let container = '';
-                switch (token.container) {
-                    case token.reserve : container = 'reserve'; break;
-                    case token.home : container = 'home'; break;
-                    case game.board.ceils : container = 'main'; break;
-                    default : container = 'toilet';
-                } 
-                const t = {
-                    index: token.index,
-                    container: container
-                }
-                p.tokens.push(t);
-            })
-            players.push(p);
-        })
-        const state = {
-            players: players,
-            turn: game.currentTurn,
-            throws: this.turns,
-            dices: [
-                game.dices[0].value,
-                game.dices[1].value
-            ]
-        };
-        //console.log(JSON.stringify(state));
-    }
-
     throwDices() {
         this.turns++;
         playSound(SOUNDS.dice2);
@@ -114,9 +76,6 @@ class Player {
         this.isGetDouble = game.dices[0].value === game.dices[1].value;
         if (game.dices[0].value >= game.dices[1].value) this.dices = [1, 0];
         else this.dices = [0, 1];
-
-        //set game state
-        this.setState()
 
         //setTimeout();
         new Timer(() => this.useDice(), constants.diceThrowDuration);

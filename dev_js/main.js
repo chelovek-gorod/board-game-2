@@ -13,10 +13,12 @@ import EndMenu from './classes/EndMenu';
 loader(initGame, loadingProgress);
 
 const secondDiv = document.querySelector('.second');
-secondDiv.innerHTML = `Loading...`;
+//secondDiv.innerHTML = `Loading...`;
+secondDiv.innerHTML = `Загрузка...`;
 
 function loadingProgress(data) {
-    secondDiv.innerHTML = `Loaded ${data.loaded} / ${data.files} files.`;
+    //secondDiv.innerHTML = `Loaded ${data.loaded} / ${data.files} files.`;
+    secondDiv.innerHTML = `Загружено ${data.loaded} / ${data.files} файлов.`;
 }
 
 // canvas layers
@@ -72,7 +74,7 @@ export const game = {
 
 function initGame() {
     game.menu = null;
-    secondDiv.innerHTML = '';
+
     game.tokens = [
         SPRITES.tokenBomb, SPRITES.tokenButton, SPRITES.tokenCap, SPRITES.tokenCoin, SPRITES.tokenCrystal,
         SPRITES.tokenDragon, SPRITES.tokenEye, SPRITES.tokenHelmet, SPRITES.tokenMask, SPRITES.tokenMolecule,
@@ -81,6 +83,15 @@ function initGame() {
     ],
     game.menu = new StartMenu(startGame);
     menuLayer.add(game.menu);
+
+    secondDiv.innerHTML = '<div id="halpButton"></div>';
+    const helpButton = document.getElementById("halpButton");
+    helpButton.style.opacity = 1;
+    helpButton.onclick = showHalp;
+    helpArr = [
+        SPRITES.halp1, SPRITES.halp2, SPRITES.halp3, SPRITES.halp4, SPRITES.halp5,
+        SPRITES.halp6, SPRITES.halp7, SPRITES.halp8, SPRITES.halp9, SPRITES.halp10,
+    ];
 }
 
 function startGame(options) {
@@ -147,4 +158,35 @@ function gameClick(x, y) {
         availableTokens[0].activation();
         return;
     }
+}
+
+const halpDiv = document.getElementById('help');
+const halpContentDiv = document.getElementById('halpContent');
+const imageHalpDiv = document.getElementById('imageHalp');
+const closeHelpDiv = document.getElementById('closeHelp');
+
+let helpArr = [];
+let helpIndex = 0;
+
+closeHelpDiv.onclick = function() {
+    halpDiv.style.opacity = 0;
+    setTimeout(() => {
+        halpDiv.style.display = 'none';
+        imageHalpDiv.innerHTML = '';
+    }, 1000);
+};
+
+halpContentDiv.onclick = function() {
+    helpIndex++;
+    if (helpIndex === helpArr.length) helpIndex = 0;
+    imageHalpDiv.innerHTML = '';
+    imageHalpDiv.append(helpArr[helpIndex]);
+};
+
+function showHalp() {
+    halpContentDiv.style.width = VIEW.size - 64 + 'px';
+    halpContentDiv.style.height = VIEW.size - 64 + 'px';
+    halpDiv.style.display = 'flex';
+    imageHalpDiv.append(helpArr[helpIndex]);
+    setTimeout(() => halpDiv.style.opacity = 1, 0);
 }

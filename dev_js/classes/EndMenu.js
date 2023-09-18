@@ -43,7 +43,7 @@ class EndMenu {
         );
         this.buttonText.draw(this.context);
 
-        playSound((data.isBo) ? SOUNDS.lose : SOUNDS.win);
+        playSound((data.isBot) ? SOUNDS.lose : SOUNDS.win);
     }
 
     click(x, y) {

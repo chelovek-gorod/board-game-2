@@ -12,6 +12,7 @@ class View {
         this.width = this.canvas.width = constants.ceilSize * 15 + constants.boardOffset * 2;
         this.height = this.canvas.height = constants.ceilSize * 15 + constants.boardOffset * 2;
         this.sizeRate = 1;
+        this.size = 0;
         this.x = Math.round(this.width / 2);
         this.y = Math.round(this.height / 2);
         this.context = this.canvas.getContext('2d');
@@ -23,8 +24,8 @@ class View {
     }
 
     resize() {
-        const size = (innerWidth > innerHeight) ? innerHeight : innerWidth;
-        this.sizeRate = this.width / size;
+        this.size = (innerWidth > innerHeight) ? innerHeight : innerWidth;
+        this.sizeRate = this.width / this.size;
     }
     
     getLayer(name) {
