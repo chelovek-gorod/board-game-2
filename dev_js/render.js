@@ -45,7 +45,7 @@ document.body.onblur = stopRender;
 function showSell() {
     divShell.style.display = 'flex';
     //divShell.innerHTML = '<div><nobr>CLICK SCREEN</nobr> FOR <nobr>START GAME</nobr></div>';
-    divShell.innerHTML = '<div><nobr> КЛИКНИТЕ </nobr>ПО ЭКРАНУ<nobr>ДЛЯ ПРОДОЛЖЕНИЯ</nobr></div>';
+    divShell.innerHTML = '<div><nobr>КЛИКНИТЕ</nobr> ПО ЭКРАНУ <nobr>ДЛЯ ПРОДОЛЖЕНИЯ</nobr></div>';
     playMusic(false);
 }
 

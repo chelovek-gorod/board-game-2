@@ -91,6 +91,7 @@ function initGame() {
     helpArr = [
         SPRITES.halp1, SPRITES.halp2, SPRITES.halp3, SPRITES.halp4, SPRITES.halp5,
         SPRITES.halp6, SPRITES.halp7, SPRITES.halp8, SPRITES.halp9, SPRITES.halp10,
+        SPRITES.halp11, SPRITES.halp12,
     ];
 }
 

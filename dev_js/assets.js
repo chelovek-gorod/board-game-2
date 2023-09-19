@@ -13,6 +13,8 @@ export const SPRITES = {
     halp8: 'help_08_920x920px.png',
     halp9: 'help_09_920x920px.png',
     halp10: 'help_10_920x920px.png',
+    halp11: 'help_11_920x920px.png',
+    halp12: 'help_12_920x920px.png',
 
     menuLogo: 'MarsGameLogoDarkBg.png',
     menuButton: 'options_button_128x128px.png',

@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="en_US">
+<html lang="ru_RU">
     <head>
+        <script src="https://yandex.ru/games/sdk/v2"></script>
         <meta charset="UTF-8">
         <!-- title and description -->
-        <title>PARCHIS - board game</title>
-        <meta name="description" content="Board game from 2 to 4 players with tokens and dices.">
+        <title>ПАРЧИС Квадрат - настольная игра</title>
+        <meta name="description" content="Настольная игра от 2х до 4х игроков (можно играть с компьютером) полем, фишками и двумя игральными кубиками">
         <!-- viewport -->
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
         <!-- styles -->
@@ -16,10 +17,13 @@
         <link rel="apple-touch-icon" sizes="120x120" href="src/icons/touch-icon-iphone-retina.png">
         <link rel="apple-touch-icon" sizes="152x152" href="src/icons/touch-icon-ipad-retina.png">
         <!-- open graph -->
-        <meta property="og:title" content="PARCHIS - board game" />
+        <meta property="og:title" content="ПАРЧИС Квадрат - настольная игра" />
         <meta property="og:image" content="src/icons/og.png" /> <!-- OG image is 1200×630 pixels  -->
-        <meta property="og:description" content="Board game from 2 to 4 players with tokens and dices." /> <!-- not important -->
-        <meta property="og:locale" content="en_US" /> <!-- default: "en_US" -->
+        <meta property="og:description" content="Настольная игра от 2х до 4х игроков (можно играть с компьютером) полем, фишками и двумя игральными кубиками" /> <!-- not important -->
+        <meta property="og:locale" content="ru_RU" /> <!-- default: "en_US" -->
+
+        <!-- Yandex Games SDK -->
+        <script src="https://yandex.ru/games/sdk/v2"></script>
     </head>
     <body>
         <div id="container">
@@ -33,7 +37,7 @@
         <div id="help">
             <div id="halpContainer">
                 <div id="halpContent">
-                    <div id="nextHalp">кликните, что бы переключиться к следующему</div>
+                    <div id="nextHalp">кликни для переключения</div>
                     <div id="imageHalp"></div>
                 </div>
                 <div id="closeHelp">закрыть</div>
@@ -41,5 +45,13 @@
         </div>
         
         <script src="./js/app.js"></script>
+
+        <script>
+            console.log('-> Yandex SDK ->');
+            YaGames.init().then(ysdk => {
+                console.log('Yandex SDK initialized');
+                window.ysdk = ysdk;
+            });
+        </script>
     </body>
 </html>
