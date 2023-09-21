@@ -16,7 +16,6 @@ music.sort(() => Math.random() - 0.5);
 let musicIndex = Math.floor(Math.random() * music.length);
 
 const backgroundMusic = new Audio();
-let backgroundMusicTime = 0;
 backgroundMusic.addEventListener('ended', playMusic);
 
 export function setSoundState(state) {
@@ -57,14 +56,10 @@ export function playSound(sound) {
 
 export function playMusic(isAvailable = true) {
     if (!isAvailable) {
-        backgroundMusicTime = backgroundMusic.currentTime;
         backgroundMusic.pause();
         backgroundMusic.currentTime = 0;
+        backgroundMusic.load();
         return;
-    }
-
-    if (backgroundMusicTime) {
-        backgroundMusic.currentTime = backgroundMusicTime;
     }
 
     backgroundMusic.src = MUSIC_PATH + music[musicIndex];
