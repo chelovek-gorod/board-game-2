@@ -1,5 +1,5 @@
 const constants = {
-    version: '1.0.0',
+    version: '0.0.98',
     ceilSize: 120,
     boardOffset: 20,
 
