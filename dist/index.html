@@ -47,11 +47,7 @@
         <script src="./js/app.js"></script>
 
         <script>
-            console.log('-> Yandex SDK ->');
-            YaGames.init().then(ysdk => {
-                console.log('Yandex SDK initialized');
-                window.ysdk = ysdk;
-            });
+            YaGames.init().then(ysdk => window.ysdk = ysdk);
         </script>
 
     </body>

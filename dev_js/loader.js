@@ -26,8 +26,8 @@ export function loader(callbackDone, callbackProgress) {
             SOUNDS[sound] = se;
             updateLoadingState();
         }
+        // for IOS and safari
         se.load();
-        se.onerror = (error) => console.log('LOADED ERROR !!!', SOUNDS[sound], 'Error:', error);
     }
 
     function updateLoadingState() {

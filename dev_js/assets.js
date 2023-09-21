@@ -28,7 +28,7 @@ export const SPRITES = {
     menuEffectsOn: 'options_effects_on_128x128px.png',
     menuEffectsOff: 'options_effects_off_128x128px.png',
 
-    board: 'game_map_1800x1800px.png',
+    board: 'board.svg',
     dice: 'dices_84x84px_mixed_frames.png',
     dicePointer: 'pointer_dice_160x160px.png',
     pointerPlayerH: 'turn_bw_480x120px_32frames.png',
