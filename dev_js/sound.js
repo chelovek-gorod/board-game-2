@@ -22,8 +22,10 @@ export function setSoundState(state) {
     const previousMusicState = soundState.music;
     soundState.music = state.music;
     soundState.effects = state.effects;
-    if (!previousMusicState && soundState.music) playMusic();
-    else playMusic(false);
+    if (previousMusicState !== soundState.music) {
+        if (soundState.music) playMusic();
+        else playMusic(false);
+    }
 }
 
 let stepSoundIndex = Math.floor(Math.random() * 4);
