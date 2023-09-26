@@ -22,7 +22,6 @@ export function loader(callbackDone, callbackProgress) {
         const se = new Audio( SOUNDS_PATH + SOUNDS[sound] );
         se.oncanplaythrough = (event) => {
             event.target.oncanplaythrough = null;
-            console.log(SOUNDS[sound], 'LOADED')
             SOUNDS[sound] = se;
             updateLoadingState();
         }

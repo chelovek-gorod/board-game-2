@@ -109,7 +109,7 @@ class StartMenu {
 
         this.versionText = new Text(
             `ВЕРСИЯ: ${constants.version}`, // `VERSION: ${constants.version}`,
-            160, this.canvas.height - 70, {
+            160, this.canvas.height - 90, {
             size: 68,
             family: 'clip',
             weight: '600',
@@ -128,12 +128,6 @@ class StartMenu {
 
         this.state.players.forEach((player, index) => {
             switch(index) {
-                /*
-                case 0 : this.playerLabels[index].render(getText(player.isUsed, player.isBot, 'on bottom side')); break;
-                case 1 : this.playerLabels[index].render(getText(player.isUsed, player.isBot, 'on left side')); break;
-                case 2 : this.playerLabels[index].render(getText(player.isUsed, player.isBot, 'on top side')); break;
-                case 3 : this.playerLabels[index].render(getText(player.isUsed, player.isBot, 'on right side')); break;
-                */
                 case 0 : this.playerLabels[index].render(getText(player.isUsed, player.isBot, 'снизу')); break;
                 case 1 : this.playerLabels[index].render(getText(player.isUsed, player.isBot, 'слева')); break;
                 case 2 : this.playerLabels[index].render(getText(player.isUsed, player.isBot, 'сверху')); break;
@@ -192,7 +186,7 @@ class StartMenu {
         this.context.drawImage(
             SPRITES.menuLogo,
             VIEW.x + 240,
-            this.canvas.height - 160
+            this.canvas.height - 180
         );
 
         this.versionText.draw(this.context)
@@ -296,8 +290,8 @@ class StartMenu {
         setTimeout(() => {
             VIEW.getLayer('menu').clear();
             this.startGameCallback(this.state);
-            setTimeout(() => VIEW.canvas.style.opacity = 1, 500);
-        }, 1000);
+            setTimeout(() => VIEW.canvas.style.opacity = 1, 600);
+        }, 1200);
     }
 
     update() {

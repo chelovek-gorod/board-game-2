@@ -1,68 +1,86 @@
 import View from './classes/View';
-import { playMusic } from './sound';
+import { hideHelp, resetHelpButton } from './help';
+import { playMusic, stopMusic } from './sound';
 
 const VIEW = new View();
 
-const divShell = document.getElementById('shell');
-showSell();
-// document.fullscreenEnabled -> true / false
-// document.fullscreenElement -> null / element
-// document.body.requestFullscreen();
-
+export const shellDiv = document.getElementById('shell');
+const gameDiv = document.getElementById('gameDiv');
+let isGameDivShown = false;
 let isRendering = true;
-let isCanvasVisible = false;
 
-const halpDiv = document.getElementById('help');
-const imageHalpDiv = document.getElementById('imageHalp');
+function getSideSizes() {
+    if (gameDiv.offsetWidth > gameDiv.offsetHeight) {
+        return {
+            width: gameDiv.offsetWidth - VIEW.canvas.offsetWidth,
+            height: VIEW.canvas.offsetHeight,
+            yandexWidth: screen.availWidth - gameDiv.offsetWidth,
+            yandexHeight: VIEW.canvas.offsetHeight,
+            side: 'right',
+        };
+    } else {
+        return {
+            width: VIEW.canvas.offsetWidth,
+            height: gameDiv.offsetHeight - VIEW.canvas.offsetHeight,
+            yandexWidth: VIEW.canvas.offsetWidth,
+            yandexHeight: screen.availHeight - gameDiv.offsetHeight,
+            side: 'top',
+        };
+    }
+}
 
 document.body.onresize = () => {
     VIEW.resize();
-    if (document.fullscreenEnabled
-    && !document.fullscreenElement) {
+    if (document.fullscreenEnabled && !document.fullscreenElement) {
         stopRender();
     }
 
-    halpDiv.style.opacity = 0;
-    halpDiv.style.display = 'none';
-    imageHalpDiv.innerHTML = '';
+    hideHelp();
+    if (isGameDivShown) resetHelpButton(getSideSizes());
 };
 
-divShell.onclick = () => {
-    startRender()
+shellDiv.onclick = () => {
+    startRender();
+
     if (document.fullscreenEnabled
     && !document.fullscreenElement) {
         document.body.requestFullscreen();
     }
 
-    if (!isCanvasVisible) {
-        isCanvasVisible = true;
-        VIEW.canvas.style.opacity = 1;
+    if (!isGameDivShown) {
+        isGameDivShown = true;
+        showDiv(gameDiv);
+        resetHelpButton(getSideSizes());
     }
 };
 
+export function showDiv(div, innerData) {
+    if (innerData) div.innerHTML = innerData;
+
+    div.style.display = "flex";
+    setTimeout(() => div.style.opacity = 1, 0);
+}
+
+export function hideDiv(div, innerData) {
+    if (innerData) div.innerHTML = innerData;
+
+    div.style.opacity = 0;
+    setTimeout(() => div.style.display = 'none', 1200);
+}
+
 document.body.onblur = stopRender;
 
-function showSell() {
-    divShell.style.display = 'flex';
-    //divShell.innerHTML = '<div><nobr>CLICK SCREEN</nobr> FOR <nobr>START GAME</nobr></div>';
-    divShell.innerHTML = '<div><nobr>КЛИКНИТЕ</nobr> ПО ЭКРАНУ <nobr>ДЛЯ ПРОДОЛЖЕНИЯ</nobr></div>';
-    playMusic(false);
-}
-
-function hideSell() {
-    divShell.style.display = 'none';
-    playMusic();
-}
-
 function startRender() {
-    hideSell()
+    hideDiv(shellDiv);
+    playMusic();
     isRendering = true;
     previousTime = performance.now();
     renderId = requestAnimationFrame(render);
 }
 
 function stopRender() {
-    showSell()
+    stopMusic();
+    showDiv(shellDiv);
     isRendering = false;
     cancelAnimationFrame(renderId);
 }

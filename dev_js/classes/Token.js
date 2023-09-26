@@ -139,17 +139,16 @@ class Token {
             if (ceilType === 'corner'
             && this.checkCeilAllTokens(game.board.ceils, index)) return this.path = [];
 
-            if (ceilType === 'home'
+            if (ceilType === 'home' 
             && isGoHome
-            && game.board.ceils[index].targetIndex=== this.startPoint) {
+            && game.board.ceils[index].targetIndex === this.startPoint
+            && points > 1 /* add */ ) {
                 if (this.checkCeilAllTokens(game.board.ceils, index)
                 || this.checkCeilPlayerTokens(this.home, 0)) return this.path = [];
                 // else (not need after return)
                 this.addPathPoint(game.board.ceils, index); // go home ceil
-                if (points > 1) {
-                    this.addPathPoint(this.home, 0);
-                    if (points > 2)this.checkPathInHome(points - 2, 0); // redirect checking
-                }
+                this.addPathPoint(this.home, 0);
+                if (points > 2)this.checkPathInHome(points - 2, 0); // redirect checking
                 return;
             }
             

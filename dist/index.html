@@ -22,33 +22,45 @@
         <meta property="og:locale" content="ru_RU" /> <!-- default: "en_US" -->
 
         <!-- Yandex Games SDK -->
-        <script src="https://yandex.ru/games/sdk/v2"></script>
+        <!--<script src="https://yandex.ru/games/sdk/v2"></script>-->
 
     </head>
-    <body>
-        <div id="container">
-            <div class="side-bar first"></div>
-            <canvas id="canvas"></canvas>
-            <div class="side-bar second"></div>
-    
-            <div id="shell"></div>
-        </div>
 
-        <div id="help">
-            <div id="halpContainer">
-                <div id="halpContent">
-                    <div id="nextHalp">кликни для переключения</div>
-                    <div id="imageHalp"></div>
-                </div>
-                <div id="closeHelp">закрыть</div>
+    <body>
+
+        <div id="container">
+
+            <div id="loadInfoDiv" class="full-screen">Загрузка...</div>
+
+            <div id="gameDiv" class="full-screen">
+                <div class="side-bar top-left"></div>
+                <canvas id="canvas"></canvas>
+                <div class="side-bar bottom-right"></div>
             </div>
+    
+            <div id="shell" class="full-screen">
+                <div><nobr>КЛИКНИТЕ</nobr> ПО ЭКРАНУ <nobr>ДЛЯ ПРОДОЛЖЕНИЯ</nobr></div>
+            </div>
+    
+            <div id="help" class="full-screen">
+                <div id="helpContainer">
+                    <div id="helpContent">
+                        <div id="nextHelp">кликни для переключения</div>
+                        <div id="imageHelp"></div>
+                    </div>
+                    <div id="closeHelp">закрыть</div>
+                </div>
+            </div>
+
         </div>
         
         <script src="./js/app.js"></script>
 
+        <!--
         <script>
             YaGames.init().then(ysdk => window.ysdk = ysdk);
         </script>
+        -->
 
     </body>
 </html>

@@ -4,21 +4,19 @@ import Board from './classes/Board';
 import Dice from './classes/Dice';
 import Layer from './classes/Layer';
 import Player from './classes/Player';
-import VIEW from './render';
+import VIEW, { shellDiv, showDiv, hideDiv } from './render';
 import constants from './constants';
 import Timer from './classes/Timer';
 import StartMenu from './classes/StartMenu';
 import EndMenu from './classes/EndMenu';
+import { initHelp } from "./help";
 
-loader(initGame, loadingProgress);
+const loadInfoDiv = document.getElementById('loadInfoDiv');
 
-const secondDiv = document.querySelector('.second');
-//secondDiv.innerHTML = `Loading...`;
-secondDiv.innerHTML = `Загрузка...`;
+loader(gameLoaded, loadingProgress);
 
 function loadingProgress(data) {
-    //secondDiv.innerHTML = `Loaded ${data.loaded} / ${data.files} files.`;
-    secondDiv.innerHTML = `Загружено ${data.loaded} / ${data.files} файлов.`;
+    loadInfoDiv.innerHTML = `Загружено &nbsp; <span> ${data.loaded} / ${data.files} </span> &nbsp; файлов.`;
 }
 
 // canvas layers
@@ -68,9 +66,14 @@ export const game = {
         });
         game.menu = endMenu
         menuLayer.add(endMenu);
-        //secondDiv.innerHTML = `PLAYER ${this.currentTurn} WIN!`;
     }
 };
+
+function gameLoaded() {
+    hideDiv(loadInfoDiv);
+    setTimeout(() => showDiv(shellDiv), 600);
+    initGame();
+}
 
 function initGame() {
     game.menu = null;
@@ -83,16 +86,7 @@ function initGame() {
     ],
     game.menu = new StartMenu(startGame);
     menuLayer.add(game.menu);
-
-    secondDiv.innerHTML = '<div id="halpButton"></div>';
-    const helpButton = document.getElementById("halpButton");
-    helpButton.style.opacity = 1;
-    helpButton.onclick = showHalp;
-    helpArr = [
-        SPRITES.halp1, SPRITES.halp2, SPRITES.halp3, SPRITES.halp4, SPRITES.halp5,
-        SPRITES.halp6, SPRITES.halp7, SPRITES.halp8, SPRITES.halp9, SPRITES.halp10,
-        SPRITES.halp11, SPRITES.halp12,
-    ];
+    initHelp();
 }
 
 function startGame(options) {
@@ -159,35 +153,4 @@ function gameClick(x, y) {
         availableTokens[0].activation();
         return;
     }
-}
-
-const halpDiv = document.getElementById('help');
-const halpContentDiv = document.getElementById('halpContent');
-const imageHalpDiv = document.getElementById('imageHalp');
-const closeHelpDiv = document.getElementById('closeHelp');
-
-let helpArr = [];
-let helpIndex = 0;
-
-closeHelpDiv.onclick = function() {
-    halpDiv.style.opacity = 0;
-    setTimeout(() => {
-        halpDiv.style.display = 'none';
-        imageHalpDiv.innerHTML = '';
-    }, 1000);
-};
-
-halpContentDiv.onclick = function() {
-    helpIndex++;
-    if (helpIndex === helpArr.length) helpIndex = 0;
-    imageHalpDiv.innerHTML = '';
-    imageHalpDiv.append(helpArr[helpIndex]);
-};
-
-function showHalp() {
-    halpContentDiv.style.width = VIEW.size - 64 + 'px';
-    halpContentDiv.style.height = VIEW.size - 64 + 'px';
-    halpDiv.style.display = 'flex';
-    imageHalpDiv.append(helpArr[helpIndex]);
-    setTimeout(() => halpDiv.style.opacity = 1, 0);
 }

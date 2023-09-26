@@ -23,7 +23,7 @@ class EndMenu {
             align: 'center'
         };
 
-        const text = (data.isBot) ? 'COMPUTER WIN!': 'PLAYER WIN!';
+        const text = (data.isBot) ? 'Компьютер выиграл' : 'Игрок выиграл';
 
         this.context.drawImage(SPRITES.pointerPlayerH, 0, 0, 480, 120, VIEW.x - 360, VIEW.y - 360, 720, 180);
         this.playerLabel = new Text(text, VIEW.x, VIEW.x - 340, this.TextStyle);
@@ -33,7 +33,7 @@ class EndMenu {
 
         this.context.drawImage(SPRITES.menuButton, this.button.x, this.button.y, this.button.width, this.button.height);
         this.buttonText = new Text(
-            'CONTINUE', this.button.x + 360, this.button.y + 10, {
+            'В МЕНЮ', this.button.x + 360, this.button.y + 10, {
                 size: 140,
                 family: 'clip',
                 weight: '600',

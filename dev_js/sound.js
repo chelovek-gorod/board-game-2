@@ -1,30 +1,21 @@
 import { SOUNDS, MUSIC_PATH } from "./assets";
+const { Howl } = require('howler');
+
+// SOUND EFFECTS
 
 const soundState = {
     music: true,
     effects: true,
 }
 
-const music = [
-    'bgm_western_0.mp3',
-    'bgm_western_1.mp3',
-    'bgm_western_2.mp3',
-    'bgm_western_3.mp3',
-    'bgm_western_4.mp3',
-]
-music.sort(() => Math.random() - 0.5);
-let musicIndex = Math.floor(Math.random() * music.length);
-
-const backgroundMusic = new Audio();
-backgroundMusic.addEventListener('ended', playMusic);
-
 export function setSoundState(state) {
     const previousMusicState = soundState.music;
     soundState.music = state.music;
     soundState.effects = state.effects;
     if (previousMusicState !== soundState.music) {
-        if (soundState.music) playMusic();
-        else playMusic(false);
+        if (soundState.music) backgroundTrack.play();
+        //else backgroundTrack.stop();
+        else backgroundTrack.pause();
     }
 }
 
@@ -54,18 +45,42 @@ export function playSound(sound) {
     sound.play();
 }
 
-export function playMusic(isAvailable = true) {
-    if (!isAvailable) {
-        backgroundMusic.pause();
-        backgroundMusic.currentTime = 0;
-        backgroundMusic.load();
-        return;
-    }
+// BACKGROUND MUSIC
 
-    backgroundMusic.src = MUSIC_PATH + music[musicIndex];
-    backgroundMusic.volume = 0.4;
-    backgroundMusic.play();
+const backgroundTracksArr = [
+    'bgm_western_0.mp3',
+    'bgm_western_1.mp3',
+    'bgm_western_2.mp3',
+    'bgm_western_3.mp3',
+    'bgm_western_4.mp3',
+];
+let backgroundTrackIndex = Math.floor(Math.random() * backgroundTracksArr.length);
+let backgroundTrack = null;
 
-    musicIndex++;
-    if(musicIndex === music.length) musicIndex = 0;
+function nextTrack() {
+    backgroundTrackIndex++;
+    if (backgroundTrackIndex === backgroundTracksArr.length) backgroundTrackIndex = 0;
+
+    const track = backgroundTracksArr[backgroundTrackIndex];
+    backgroundTrack = getTrack(track);
+    backgroundTrack.play();
+}
+
+function getTrack(track) {
+    return new Howl({
+        src: [MUSIC_PATH + track],
+        volume: 0.5,
+        onend: nextTrack,
+    });
+}
+
+export function playMusic() {
+    if (!soundState.music) return;
+
+    if (backgroundTrack) backgroundTrack.play();
+    else nextTrack();
+}
+
+export function stopMusic() {
+    backgroundTrack.pause();
 }

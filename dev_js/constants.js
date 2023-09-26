@@ -1,9 +1,9 @@
 const constants = {
-    version: '0.0.102',
+    version: '1.0.0',
     ceilSize: 120,
     boardOffset: 20,
 
-    gameStartDuration: 2500,
+    gameStartDuration: 1800,
 
     diceThrowDuration: 1000,
     diceActiveDuration: 800,
